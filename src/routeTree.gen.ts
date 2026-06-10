@@ -16,6 +16,7 @@ import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/ap
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppHistoryRouteImport } from './routes/_authenticated/app.history'
+import { Route as ApiPublicPushSendReminderRouteImport } from './routes/api/public/push/send-reminder'
 import { Route as AuthenticatedAppPrintWeekIdRouteImport } from './routes/_authenticated/app.print.$weekId'
 import { Route as AuthenticatedAppPlanWeekIdRouteImport } from './routes/_authenticated/app.plan.$weekId'
 import { Route as AuthenticatedAppPlanWeekIdCoursesRouteImport } from './routes/_authenticated/app.plan.$weekId.courses'
@@ -55,6 +56,12 @@ const AuthenticatedAppHistoryRoute = AuthenticatedAppHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const ApiPublicPushSendReminderRoute =
+  ApiPublicPushSendReminderRouteImport.update({
+    id: '/api/public/push/send-reminder',
+    path: '/api/public/push/send-reminder',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAppPrintWeekIdRoute =
   AuthenticatedAppPrintWeekIdRouteImport.update({
     id: '/print/$weekId',
@@ -83,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
   '/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/api/public/push/send-reminder': typeof ApiPublicPushSendReminderRoute
   '/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +101,7 @@ export interface FileRoutesByTo {
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
   '/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/api/public/push/send-reminder': typeof ApiPublicPushSendReminderRoute
   '/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRoutesById {
@@ -106,6 +115,7 @@ export interface FileRoutesById {
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
   '/_authenticated/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/api/public/push/send-reminder': typeof ApiPublicPushSendReminderRoute
   '/_authenticated/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRouteTypes {
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/plan/$weekId'
     | '/app/print/$weekId'
+    | '/api/public/push/send-reminder'
     | '/app/plan/$weekId/courses'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/plan/$weekId'
     | '/app/print/$weekId'
+    | '/api/public/push/send-reminder'
     | '/app/plan/$weekId/courses'
   id:
     | '__root__'
@@ -141,6 +153,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/'
     | '/_authenticated/app/plan/$weekId'
     | '/_authenticated/app/print/$weekId'
+    | '/api/public/push/send-reminder'
     | '/_authenticated/app/plan/$weekId/courses'
   fileRoutesById: FileRoutesById
 }
@@ -148,6 +161,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicPushSendReminderRoute: typeof ApiPublicPushSendReminderRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -200,6 +214,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/history'
       preLoaderRoute: typeof AuthenticatedAppHistoryRouteImport
       parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/api/public/push/send-reminder': {
+      id: '/api/public/push/send-reminder'
+      path: '/api/public/push/send-reminder'
+      fullPath: '/api/public/push/send-reminder'
+      preLoaderRoute: typeof ApiPublicPushSendReminderRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app/print/$weekId': {
       id: '/_authenticated/app/print/$weekId'
@@ -274,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicPushSendReminderRoute: ApiPublicPushSendReminderRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
