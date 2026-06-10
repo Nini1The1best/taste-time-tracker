@@ -1,0 +1,17 @@
+{
+  "name": "Mijote — Planning de repas",
+  "short_name": "Mijote",
+  "description": "Planifie tes repas, génère ta liste de courses.",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8e8d8",
+  "theme_color": "#f8e8d8",
+  "orientation": "portrait",
+  "lang": "fr",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

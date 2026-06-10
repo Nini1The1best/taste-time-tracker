@@ -9,38 +9,177 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
+import { Route as AuthenticatedAppHistoryRouteImport } from './routes/_authenticated/app.history'
+import { Route as ApiPublicPushSendReminderRouteImport } from './routes/api/public/push/send-reminder'
+import { Route as AuthenticatedAppPrintWeekIdRouteImport } from './routes/_authenticated/app.print.$weekId'
+import { Route as AuthenticatedAppPlanWeekIdRouteImport } from './routes/_authenticated/app.plan.$weekId'
+import { Route as AuthenticatedAppPlanWeekIdCoursesRouteImport } from './routes/_authenticated/app.plan.$weekId.courses'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppHistoryRoute = AuthenticatedAppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const ApiPublicPushSendReminderRoute =
+  ApiPublicPushSendReminderRouteImport.update({
+    id: '/api/public/push/send-reminder',
+    path: '/api/public/push/send-reminder',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAppPrintWeekIdRoute =
+  AuthenticatedAppPrintWeekIdRouteImport.update({
+    id: '/print/$weekId',
+    path: '/print/$weekId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlanWeekIdRoute =
+  AuthenticatedAppPlanWeekIdRouteImport.update({
+    id: '/plan/$weekId',
+    path: '/plan/$weekId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlanWeekIdCoursesRoute =
+  AuthenticatedAppPlanWeekIdCoursesRouteImport.update({
+    id: '/courses',
+    path: '/courses',
+    getParentRoute: () => AuthenticatedAppPlanWeekIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app/history': typeof AuthenticatedAppHistoryRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  '/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/api/public/push/send-reminder': typeof ApiPublicPushSendReminderRoute
+  '/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/app/history': typeof AuthenticatedAppHistoryRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  '/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/api/public/push/send-reminder': typeof ApiPublicPushSendReminderRoute
+  '/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/history': typeof AuthenticatedAppHistoryRoute
+  '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  '/_authenticated/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/api/public/push/send-reminder': typeof ApiPublicPushSendReminderRoute
+  '/_authenticated/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/app'
+    | '/app/history'
+    | '/app/settings'
+    | '/app/'
+    | '/app/plan/$weekId'
+    | '/app/print/$weekId'
+    | '/api/public/push/send-reminder'
+    | '/app/plan/$weekId/courses'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/history'
+    | '/app/settings'
+    | '/app'
+    | '/app/plan/$weekId'
+    | '/app/print/$weekId'
+    | '/api/public/push/send-reminder'
+    | '/app/plan/$weekId/courses'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/app'
+    | '/_authenticated/app/history'
+    | '/_authenticated/app/settings'
+    | '/_authenticated/app/'
+    | '/_authenticated/app/plan/$weekId'
+    | '/_authenticated/app/print/$weekId'
+    | '/api/public/push/send-reminder'
+    | '/_authenticated/app/plan/$weekId/courses'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicPushSendReminderRoute: typeof ApiPublicPushSendReminderRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +187,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings': {
+      id: '/_authenticated/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/history': {
+      id: '/_authenticated/app/history'
+      path: '/history'
+      fullPath: '/app/history'
+      preLoaderRoute: typeof AuthenticatedAppHistoryRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/api/public/push/send-reminder': {
+      id: '/api/public/push/send-reminder'
+      path: '/api/public/push/send-reminder'
+      fullPath: '/api/public/push/send-reminder'
+      preLoaderRoute: typeof ApiPublicPushSendReminderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/app/print/$weekId': {
+      id: '/_authenticated/app/print/$weekId'
+      path: '/print/$weekId'
+      fullPath: '/app/print/$weekId'
+      preLoaderRoute: typeof AuthenticatedAppPrintWeekIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/plan/$weekId': {
+      id: '/_authenticated/app/plan/$weekId'
+      path: '/plan/$weekId'
+      fullPath: '/app/plan/$weekId'
+      preLoaderRoute: typeof AuthenticatedAppPlanWeekIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/plan/$weekId/courses': {
+      id: '/_authenticated/app/plan/$weekId/courses'
+      path: '/courses'
+      fullPath: '/app/plan/$weekId/courses'
+      preLoaderRoute: typeof AuthenticatedAppPlanWeekIdCoursesRouteImport
+      parentRoute: typeof AuthenticatedAppPlanWeekIdRoute
+    }
   }
 }
 
+interface AuthenticatedAppPlanWeekIdRouteChildren {
+  AuthenticatedAppPlanWeekIdCoursesRoute: typeof AuthenticatedAppPlanWeekIdCoursesRoute
+}
+
+const AuthenticatedAppPlanWeekIdRouteChildren: AuthenticatedAppPlanWeekIdRouteChildren =
+  {
+    AuthenticatedAppPlanWeekIdCoursesRoute:
+      AuthenticatedAppPlanWeekIdCoursesRoute,
+  }
+
+const AuthenticatedAppPlanWeekIdRouteWithChildren =
+  AuthenticatedAppPlanWeekIdRoute._addFileChildren(
+    AuthenticatedAppPlanWeekIdRouteChildren,
+  )
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppHistoryRoute: typeof AuthenticatedAppHistoryRoute
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppPlanWeekIdRoute: typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  AuthenticatedAppPrintWeekIdRoute: typeof AuthenticatedAppPrintWeekIdRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppHistoryRoute: AuthenticatedAppHistoryRoute,
+  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppPlanWeekIdRoute: AuthenticatedAppPlanWeekIdRouteWithChildren,
+  AuthenticatedAppPrintWeekIdRoute: AuthenticatedAppPrintWeekIdRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicPushSendReminderRoute: ApiPublicPushSendReminderRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
