@@ -98,7 +98,7 @@ export const updateSlot = createServerFn({ method: "POST" })
     }).parse(input),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
+    const patch: { enabled?: boolean; meal_name?: string } = {};
     if (data.enabled !== undefined) patch.enabled = data.enabled;
     if (data.meal_name !== undefined) patch.meal_name = data.meal_name;
     const { error } = await context.supabase.from("meal_slots").update(patch).eq("id", data.id);
