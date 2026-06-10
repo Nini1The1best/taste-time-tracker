@@ -31,7 +31,7 @@ function SettingsPage() {
   const { data: vapid } = useQuery({ queryKey: ["vapid"], queryFn: () => fetchVapid() });
 
   const prefsMut = useMutation({
-    mutationFn: (v: Parameters<typeof upPrefs>[0]["data"]) => upPrefs({ data: v }),
+    mutationFn: (v: { weekly_reminder?: boolean; reminder_dow?: number; reminder_hour?: number; tz?: string }) => upPrefs({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["prefs"] }),
   });
 
@@ -56,7 +56,7 @@ function SettingsPage() {
       const reg = await navigator.serviceWorker.register("/push-sw.js");
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapid.key),
+        applicationServerKey: urlBase64ToUint8Array(vapid.key) as BufferSource,
       });
       const json = sub.toJSON();
       await subPush({ data: {
