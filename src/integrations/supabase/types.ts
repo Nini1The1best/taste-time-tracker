@@ -14,7 +14,219 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ingredients: {
+        Row: {
+          created_at: string
+          id: string
+          meal_slot_id: string
+          name: string
+          position: number
+          quantity: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          meal_slot_id: string
+          name: string
+          position?: number
+          quantity?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          meal_slot_id?: string
+          name?: string
+          position?: number
+          quantity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ingredients_meal_slot_id_fkey"
+            columns: ["meal_slot_id"]
+            isOneToOne: false
+            referencedRelation: "meal_slots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meal_slots: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          enabled: boolean
+          id: string
+          meal_name: string
+          position: number
+          slot: Database["public"]["Enums"]["meal_slot_kind"]
+          updated_at: string
+          week_id: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          enabled?: boolean
+          id?: string
+          meal_name?: string
+          position?: number
+          slot: Database["public"]["Enums"]["meal_slot_kind"]
+          updated_at?: string
+          week_id: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          enabled?: boolean
+          id?: string
+          meal_name?: string
+          position?: number
+          slot?: Database["public"]["Enums"]["meal_slot_kind"]
+          updated_at?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meal_slots_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_prefs: {
+        Row: {
+          reminder_dow: number
+          reminder_hour: number
+          tz: string
+          updated_at: string
+          user_id: string
+          weekly_reminder: boolean
+        }
+        Insert: {
+          reminder_dow?: number
+          reminder_hour?: number
+          tz?: string
+          updated_at?: string
+          user_id: string
+          weekly_reminder?: boolean
+        }
+        Update: {
+          reminder_dow?: number
+          reminder_hour?: number
+          tz?: string
+          updated_at?: string
+          user_id?: string
+          weekly_reminder?: boolean
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          ua: string | null
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          ua?: string | null
+          user_id: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          ua?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      shopping_lists: {
+        Row: {
+          checked_items: Json
+          generated_at: string
+          id: string
+          week_id: string
+        }
+        Insert: {
+          checked_items?: Json
+          generated_at?: string
+          id?: string
+          week_id: string
+        }
+        Update: {
+          checked_items?: Json
+          generated_at?: string
+          id?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shopping_lists_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: true
+            referencedRelation: "weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weeks: {
+        Row: {
+          created_at: string
+          id: string
+          start_date: string
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          start_date: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          start_date?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +235,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      meal_slot_kind: "lunch" | "dinner"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +362,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      meal_slot_kind: ["lunch", "dinner"],
+    },
   },
 } as const
