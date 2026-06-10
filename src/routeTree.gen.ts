@@ -13,6 +13,12 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
+import { Route as AuthenticatedAppHistoryRouteImport } from './routes/_authenticated/app.history'
+import { Route as AuthenticatedAppPrintWeekIdRouteImport } from './routes/_authenticated/app.print.$weekId'
+import { Route as AuthenticatedAppPlanWeekIdRouteImport } from './routes/_authenticated/app.plan.$weekId'
+import { Route as AuthenticatedAppPlanWeekIdCoursesRouteImport } from './routes/_authenticated/app.plan.$weekId.courses'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -33,30 +39,109 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppHistoryRoute = AuthenticatedAppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppPrintWeekIdRoute =
+  AuthenticatedAppPrintWeekIdRouteImport.update({
+    id: '/print/$weekId',
+    path: '/print/$weekId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlanWeekIdRoute =
+  AuthenticatedAppPlanWeekIdRouteImport.update({
+    id: '/plan/$weekId',
+    path: '/plan/$weekId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlanWeekIdCoursesRoute =
+  AuthenticatedAppPlanWeekIdCoursesRouteImport.update({
+    id: '/courses',
+    path: '/courses',
+    getParentRoute: () => AuthenticatedAppPlanWeekIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/app': typeof AuthenticatedAppRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app/history': typeof AuthenticatedAppHistoryRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  '/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/app': typeof AuthenticatedAppRoute
+  '/app/history': typeof AuthenticatedAppHistoryRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  '/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_authenticated/app': typeof AuthenticatedAppRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/history': typeof AuthenticatedAppHistoryRoute
+  '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/plan/$weekId': typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  '/_authenticated/app/print/$weekId': typeof AuthenticatedAppPrintWeekIdRoute
+  '/_authenticated/app/plan/$weekId/courses': typeof AuthenticatedAppPlanWeekIdCoursesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/app'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/app'
+    | '/app/history'
+    | '/app/settings'
+    | '/app/'
+    | '/app/plan/$weekId'
+    | '/app/print/$weekId'
+    | '/app/plan/$weekId/courses'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/app'
-  id: '__root__' | '/' | '/_authenticated' | '/auth' | '/_authenticated/app'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/history'
+    | '/app/settings'
+    | '/app'
+    | '/app/plan/$weekId'
+    | '/app/print/$weekId'
+    | '/app/plan/$weekId/courses'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/app'
+    | '/_authenticated/app/history'
+    | '/_authenticated/app/settings'
+    | '/_authenticated/app/'
+    | '/_authenticated/app/plan/$weekId'
+    | '/_authenticated/app/print/$weekId'
+    | '/_authenticated/app/plan/$weekId/courses'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,15 +180,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings': {
+      id: '/_authenticated/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/history': {
+      id: '/_authenticated/app/history'
+      path: '/history'
+      fullPath: '/app/history'
+      preLoaderRoute: typeof AuthenticatedAppHistoryRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/print/$weekId': {
+      id: '/_authenticated/app/print/$weekId'
+      path: '/print/$weekId'
+      fullPath: '/app/print/$weekId'
+      preLoaderRoute: typeof AuthenticatedAppPrintWeekIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/plan/$weekId': {
+      id: '/_authenticated/app/plan/$weekId'
+      path: '/plan/$weekId'
+      fullPath: '/app/plan/$weekId'
+      preLoaderRoute: typeof AuthenticatedAppPlanWeekIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/plan/$weekId/courses': {
+      id: '/_authenticated/app/plan/$weekId/courses'
+      path: '/courses'
+      fullPath: '/app/plan/$weekId/courses'
+      preLoaderRoute: typeof AuthenticatedAppPlanWeekIdCoursesRouteImport
+      parentRoute: typeof AuthenticatedAppPlanWeekIdRoute
+    }
   }
 }
 
+interface AuthenticatedAppPlanWeekIdRouteChildren {
+  AuthenticatedAppPlanWeekIdCoursesRoute: typeof AuthenticatedAppPlanWeekIdCoursesRoute
+}
+
+const AuthenticatedAppPlanWeekIdRouteChildren: AuthenticatedAppPlanWeekIdRouteChildren =
+  {
+    AuthenticatedAppPlanWeekIdCoursesRoute:
+      AuthenticatedAppPlanWeekIdCoursesRoute,
+  }
+
+const AuthenticatedAppPlanWeekIdRouteWithChildren =
+  AuthenticatedAppPlanWeekIdRoute._addFileChildren(
+    AuthenticatedAppPlanWeekIdRouteChildren,
+  )
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppHistoryRoute: typeof AuthenticatedAppHistoryRoute
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppPlanWeekIdRoute: typeof AuthenticatedAppPlanWeekIdRouteWithChildren
+  AuthenticatedAppPrintWeekIdRoute: typeof AuthenticatedAppPrintWeekIdRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppHistoryRoute: AuthenticatedAppHistoryRoute,
+  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppPlanWeekIdRoute: AuthenticatedAppPlanWeekIdRouteWithChildren,
+  AuthenticatedAppPrintWeekIdRoute: AuthenticatedAppPrintWeekIdRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAppRoute: AuthenticatedAppRoute,
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
