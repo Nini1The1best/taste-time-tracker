@@ -51,9 +51,11 @@ function CoursesPage() {
 
   const share = async () => {
     if (!list) return;
-    const text = `🛒 Liste de courses\n\n${formatShoppingText(list.items)}`;
+    const text = list.items
+      .map((i) => `${i.name}${i.quantities.length ? " (" + i.quantities.join(" + ") + ")" : ""}`)
+      .join("\n");
     if (navigator.share) {
-      try { await navigator.share({ title: "Liste de courses", text }); return; } catch {}
+      try { await navigator.share({ text }); return; } catch {}
     }
     await navigator.clipboard.writeText(text);
     toast.success("Copiée dans le presse-papier");
