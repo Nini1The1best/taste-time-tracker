@@ -10,7 +10,7 @@ import { DAY_SHORT, SLOT_LABELS } from "@/lib/week-utils";
 import { ChevronLeft, Plus, Share2, Copy, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/app/plan/$weekId/courses")({
+export const Route = createFileRoute("/_authenticated/app/plan/$weekId_/courses")({
   component: CoursesPage,
 });
 
