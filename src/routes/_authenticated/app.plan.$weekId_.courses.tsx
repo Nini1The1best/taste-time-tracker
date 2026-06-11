@@ -53,7 +53,7 @@ function CoursesPage() {
     if (!list) return;
     const text = list.items
       .map((i) => `${i.name}${i.quantities.length ? " (" + i.quantities.join(" + ") + ")" : ""}`)
-      .join("\n");
+      .join("\n\n");
     if (navigator.share) {
       try { await navigator.share({ text }); return; } catch {}
     }
