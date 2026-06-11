@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { getPrefs, updatePrefs, getProfile } from "@/lib/prefs.functions";
 import { listWeeks } from "@/lib/weeks.functions";
-import { getVapidPublicKey, subscribePush, unsubscribePush } from "@/lib/push.functions";
+import { getVapidPublicKey, subscribePush, unsubscribePush, sendTestPush } from "@/lib/push.functions";
 import { useEffect, useState } from "react";
 import { Bell, BellOff, Download, LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
@@ -24,6 +24,7 @@ function SettingsPage() {
   const fetchVapid = useServerFn(getVapidPublicKey);
   const subPush = useServerFn(subscribePush);
   const unsubPush = useServerFn(unsubscribePush);
+  const testPush = useServerFn(sendTestPush);
   const fetchWeeks = useServerFn(listWeeks);
 
   const { data: prefs } = useQuery({ queryKey: ["prefs"], queryFn: () => fetchPrefs() });
@@ -130,6 +131,23 @@ function SettingsPage() {
             </button>
           )}
         </Row>
+        {pushStatus === "on" && (
+          <Row label="Tester l'envoi" subtitle="Envoie une notification de test maintenant">
+            <button
+              onClick={async () => {
+                try {
+                  const res = await testPush();
+                  toast.success(`Envoyé à ${res.sent} appareil${res.sent > 1 ? "s" : ""}`);
+                } catch (e) {
+                  toast.error(e instanceof Error ? e.message : "Erreur d'envoi");
+                }
+              }}
+              className="rounded-full bg-primary text-primary-foreground px-4 py-2 text-xs font-semibold inline-flex items-center gap-2 hover:opacity-90 transition"
+            >
+              <Bell className="h-3.5 w-3.5" /> Tester
+            </button>
+          </Row>
+        )}
       </Section>
 
       <Section title="Données">
