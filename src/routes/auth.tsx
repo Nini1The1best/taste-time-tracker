@@ -25,7 +25,7 @@ function AuthPage() {
 
   const onGoogle = async () => {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: "https://mijoteats.com/app" });
+    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: "https://mijoteats.com/auth/v1/callback" });
     if (result.error) { toast.error("Connexion Google impossible"); setLoading(false); return; }
     if (result.redirected) return;
     navigate({ to: "/app" });
