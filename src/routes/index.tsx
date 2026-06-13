@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router';
-import { Calendar, List, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
